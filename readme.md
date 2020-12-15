@@ -1,0 +1,1 @@
+This is the front end for the Blog List assignment from the Full Stack Open curriculum.
