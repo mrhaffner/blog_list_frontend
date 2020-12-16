@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import LogIn from './components/LogIn'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
@@ -54,24 +55,44 @@ const App = () => {
       }
   }
 
+  const createBlog = async (blogObject) => {
+    blogFormRef.current.toggleVisibility()
+    const returnedBlog = await blogService.create(blogObject)
+    setBlogs(blogs.concat(returnedBlog))
+  }
+
   const logout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBlogappUser')
   }
 
-  if (user === null) {
-    return (
+  const loginForm = () => (
+    <Togglable buttonLabel='login'>
       <LogIn username={username} setUsername={setUsername} password={password} setPassword={setPassword} handleLogin={handleLogin} />
-    )
-  }
+    </Togglable>
+  )
+
+  const blogFormRef = useRef()
+
+  const blogForm = () => (
+    <Togglable buttonLabel='new blog' ref={blogFormRef}>  
+      <BlogForm blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setMessageType={setMessageType} createBlog={createBlog} />
+    </Togglable>
+  )
 
   return (
     <div>
       <h2>blogs</h2>
       <Notification message={message} messageType={messageType}/>
-      <span>{user.name} logged in</span>
-      <button onClick={logout}>logout</button>
-      <BlogForm blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setMessageType={setMessageType} />
+      {user === null ?
+        loginForm() :
+        <div>
+          <span>{user.name} logged in</span>
+          <button onClick={logout}>logout</button>
+          {blogForm()}
+        </div>
+      }
+
       <BlogList blogs={blogs} />
     </div>
   )
