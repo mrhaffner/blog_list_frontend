@@ -15,9 +15,10 @@ const App = () => {
   const [messageType, setMessageType] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs => {
+      blogs.sort((a, b) => b.likes - a.likes)
       setBlogs( blogs )
-    )  
+    })  
   }, [])
 
   useEffect(() => {
