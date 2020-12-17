@@ -13,11 +13,11 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
 
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
-  const displayStyle = { display: visible ? '' : 'none'}
-  const displayDelete = { display: user === null ? 'none' : user.name === blog.user.name ? '' : 'none'}
+  const displayStyle = { display: visible ? '' : 'none' }
+  const displayDelete = { display: user === null ? 'none' : user.name === blog.user.name ? '' : 'none' }
 
   const updateLikes = () => {
-    const newObject = { likes: likes + 1}
+    const newObject = { likes: likes + 1 }
     blogService.addLike(blog.id, newObject)
     setLikes(likes + 1)
   }
