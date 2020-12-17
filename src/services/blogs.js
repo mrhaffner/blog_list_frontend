@@ -7,12 +7,12 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const getAll = () => {
+const getAll = async () => {
   const config = {
     headers: { Authorization: token },
   }
-  const request = axios.get(baseUrl, config)
-  return request.then(response => response.data)
+  const response = await axios.get(baseUrl, config)
+  return response.data
 }
 
 const create = async newObject => {
@@ -29,4 +29,12 @@ const addLike = async (id, newObject) => {
   return response.data
 }
 
-export default { getAll, setToken, create, addLike }
+const remove = async id => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  return response.data
+}
+
+export default { getAll, setToken, create, addLike, remove }

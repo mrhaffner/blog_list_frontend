@@ -59,6 +59,7 @@ const App = () => {
   const createBlog = async (blogObject) => {
     blogFormRef.current.toggleVisibility()
     const returnedBlog = await blogService.create(blogObject)
+    returnedBlog.user = user
     setBlogs(blogs.concat(returnedBlog))
   }
 
@@ -94,7 +95,7 @@ const App = () => {
         </div>
       }
 
-      <BlogList blogs={blogs} setBlogs={setBlogs} />
+      <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
     </div>
   )
 }
