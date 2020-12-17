@@ -1,13 +1,11 @@
 import React from 'react'
 import Blog from './Blog'
 
-const BlogList = ({ blogs }) => {
+const BlogList = ({ blogs, setBlogs }) => {
     return (
         <div>
             {blogs.map(blog =>
-                <div>
-                    <Blog key={blog.id} blog={blog} /> 
-                </div>
+                <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
             )}
         </div>
     )

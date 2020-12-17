@@ -93,7 +93,7 @@ const App = () => {
         </div>
       }
 
-      <BlogList blogs={blogs} />
+      <BlogList blogs={blogs} setBlogs={setBlogs} />
     </div>
   )
 }
