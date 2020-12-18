@@ -32,8 +32,8 @@ const Blog = ({ blog, blogs, setBlogs, user, updateLikes }) => {
       <div style={displayStyle} className='toggleDiv'>
         <p>{blog.url}</p>
         <span>likes {likes}</span>
-        <button onClick={() => updateLikes(blog.id, likes, setLikes)}>like</button>
-        <p>{blog.user.name}</p>
+        <button id='like' onClick={() => updateLikes(blog.id, likes, setLikes)}>like</button>
+        {user ? <p>{blog.user.name}</p> : null}
         <button onClick={deleteBlog} style={displayDelete}>remove</button>
       </div>
     </div>
