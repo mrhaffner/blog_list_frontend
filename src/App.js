@@ -15,10 +15,10 @@ const App = () => {
   const [messageType, setMessageType] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs => {
+    blogService.getAll().then((blogs) => {
       blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs( blogs )
-    })  
+      setBlogs(blogs)
+    })
   }, [])
 
   useEffect(() => {
@@ -30,30 +30,29 @@ const App = () => {
     }
   }, [])
 
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const handleLogin = async (event) => {
-      event.preventDefault()
-      try {
-        const user = await loginService.login({
-          username, password,
-        })
-  
-        window.localStorage.setItem(
-          'loggedBlogappUser', JSON.stringify(user)
-        ) 
-        blogService.setToken(user.token)
-        setUser(user)
-        setUsername('')
-        setPassword('')
-      } catch (exception) {
-        setMessage('Wrong credentials')
-        setMessageType("errorMessage")
-        setTimeout(() => {
-          setMessage(null)
-          setMessageType(null)
-        }, 5000)
-      }
+    event.preventDefault()
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      setMessage('Wrong credentials')
+      setMessageType('errorMessage')
+      setTimeout(() => {
+        setMessage(null)
+        setMessageType(null)
+      }, 5000)
+    }
   }
 
   const createBlog = async (blogObject) => {
@@ -68,34 +67,51 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
   }
 
+  const updateLikes = (id, likes, setLikes) => {
+    const newObject = { likes: likes + 1 }
+    blogService.addLike(id, newObject)
+    setLikes(likes + 1)
+  }
+
   const loginForm = () => (
-    <Togglable buttonLabel='login'>
-      <LogIn username={username} setUsername={setUsername} password={password} setPassword={setPassword} handleLogin={handleLogin} />
+    <Togglable buttonLabel="login">
+      <LogIn
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+        handleLogin={handleLogin}
+      />
     </Togglable>
   )
 
   const blogFormRef = useRef()
 
   const blogForm = () => (
-    <Togglable buttonLabel='new blog' ref={blogFormRef}>  
-      <BlogForm setMessage={setMessage} setMessageType={setMessageType} createBlog={createBlog} />
+    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <BlogForm
+        setMessage={setMessage}
+        setMessageType={setMessageType}
+        createBlog={createBlog}
+      />
     </Togglable>
   )
 
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={message} messageType={messageType}/>
-      {user === null ?
-        loginForm() :
+      <Notification message={message} messageType={messageType} />
+      {user === null ? (
+        loginForm()
+      ) : (
         <div>
           <span>{user.name} logged in</span>
           <button onClick={logout}>logout</button>
           {blogForm()}
         </div>
-      }
+      )}
 
-      <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
+      <BlogList blogs={blogs} setBlogs={setBlogs} user={user} updateLikes={updateLikes} />
     </div>
   )
 }

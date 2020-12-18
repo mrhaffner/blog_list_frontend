@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
 
-const Blog = ({ blog, blogs, setBlogs, user }) => {
+const Blog = ({ blog, blogs, setBlogs, user, updateLikes }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -16,12 +16,6 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
   const displayStyle = { display: visible ? '' : 'none' }
   const displayDelete = { display: user === null ? 'none' : user.name === blog.user.name ? '' : 'none' }
 
-  const updateLikes = () => {
-    const newObject = { likes: likes + 1 }
-    blogService.addLike(blog.id, newObject)
-    setLikes(likes + 1)
-  }
-
   const deleteBlog = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       blogService.remove(blog.id)
@@ -30,15 +24,15 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} >
       <span>{blog.title} {blog.author}</span>
       <button onClick={() => setVisible(!visible)}>
         {visible ? 'hide' : 'view'}
       </button>
-      <div style={displayStyle}>
+      <div style={displayStyle} className='toggleDiv'>
         <p>{blog.url}</p>
         <span>likes {likes}</span>
-        <button onClick={updateLikes}>like</button>
+        <button onClick={() => updateLikes(blog.id, likes, setLikes)}>like</button>
         <p>{blog.user.name}</p>
         <button onClick={deleteBlog} style={displayDelete}>remove</button>
       </div>
