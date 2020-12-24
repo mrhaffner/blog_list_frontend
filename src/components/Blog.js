@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-
 const Blog = ({ blog, blogs, setBlogs, user, updateLikes }) => {
   const blogStyle = {
     paddingTop: 10,
