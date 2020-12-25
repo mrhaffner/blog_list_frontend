@@ -6,17 +6,15 @@ import LogIn from './components/LogIn'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import { setBlogs } from './reducers/blogReducer'
-import { addBlog } from './reducers/blogReducer'
+import { setBlogs, addBlog } from './reducers/blogReducer'
 import { createNotification } from './reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
+import { setUser, removeUser } from './reducers/userReducer'
+import { useDispatch, useSelector } from 'react-redux'
 import './App.css'
 
 const App = () => {
   const dispatch = useDispatch()
-  //
-  const [user, setUser] = useState(null)
-  //
+  const user = useSelector(state => state.user)
   useEffect(() => {
     blogService.getAll().then(blogs => {
       blogs.sort((a, b) => b.likes - a.likes)
@@ -27,25 +25,25 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      const newUser = JSON.parse(loggedUserJSON)
+      dispatch(setUser(newUser))
+      blogService.setToken(newUser.token)
     }
-  }, [])
+  }, [dispatch])
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({
+      const newUser = await loginService.login({
         username,
         password,
       })
 
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(newUser))
+      blogService.setToken(newUser.token)
+      dispatch(setUser(newUser))
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -53,8 +51,8 @@ const App = () => {
     }
   }
 
-  const logout = () => {
-    setUser(null)
+  const logOut = () => {
+    dispatch(removeUser())
     window.localStorage.removeItem('loggedBlogappUser')
   }
 
@@ -94,7 +92,7 @@ const App = () => {
       ) : (
         <div>
           <span>{user.username} logged in</span>
-          <button onClick={logout}>logout</button>
+          <button onClick={logOut}>logout</button>
           {blogForm()}
         </div>
       )}
