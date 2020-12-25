@@ -3,9 +3,12 @@ import loginService from '../services/login'
 import { createNotification } from '../reducers/notificationReducer'
 import { setUser } from '../reducers/loggedUserReducer'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+
 
 const LogIn = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -20,6 +23,7 @@ const LogIn = () => {
       setPassword('')
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(newUser))
       dispatch(setUser(newUser))
+      history.push('/')
     } catch (exception) {
       dispatch(createNotification({ message: 'Wrong credentials', type: 'errorMessage' }))
     }

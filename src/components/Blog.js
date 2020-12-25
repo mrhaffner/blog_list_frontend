@@ -19,7 +19,6 @@ const Blog = () => {
   const blog = blogs.length > 0
     ? blogs.find(blog => id === blog.id)
     : null
-  console.log(blogs, id)
 
   const loggedUser = useSelector(state => state.loggedUser)
   const displayDelete = {
@@ -37,8 +36,8 @@ const Blog = () => {
   return (
     <div>
       <h2>{blog.title} by {blog.author}</h2>
-      <a href={blog.url}>{blog.url}</a>
-      <p>likes {blog.likes}</p>
+      <a href={blog.url}>{blog.url}</a><br/>
+      <span>likes {blog.likes}</span>
       <button id='like' onClick={() => dispatch(addLike(blog))}>like</button>
       {loggedUser ? <p>added by {blog.user.username}</p> : null}
       <button onClick={deleteBlog} style={displayDelete}>remove</button>
