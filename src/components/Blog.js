@@ -11,11 +11,12 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
-  const user = useSelector(state => state.user)
+  const loggedUser = useSelector(state => state.loggedUser)
+
   const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
   const displayStyle = { display: visible ? '' : 'none' }
-  const displayDelete = { display: user === null ? 'none' : user.name === blog.user.name ? '' : 'none' }
+  const displayDelete = { display: loggedUser === null ? 'none' : loggedUser.username === blog.user.username ? '' : 'none' }
 
   const deleteBlog = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
@@ -33,7 +34,7 @@ const Blog = ({ blog }) => {
         <p>{blog.url}</p>
         <span>likes {blog.likes}</span>
         <button id='like' onClick={() => dispatch(addLike(blog))}>like</button>
-        {user ? <p>{blog.user.name}</p> : null}
+        {loggedUser ? <p>{blog.user.username}</p> : null}
         <button onClick={deleteBlog} style={displayDelete}>remove</button>
       </div>
     </div>

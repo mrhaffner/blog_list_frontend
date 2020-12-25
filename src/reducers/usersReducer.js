@@ -1,6 +1,6 @@
 import userService from '../services/users'
 
-const userReducer = (state = [], action) => {
+const usersReducer = (state = [], action) => {
   switch(action.type) {
   case 'SET_USERS':
     return action.users
@@ -12,7 +12,6 @@ const userReducer = (state = [], action) => {
 export const setUsers = () => {
   return async dispatch => {
     const users = await userService.getAll()
-    console.log(users)
     dispatch ({
       type: 'SET_USERS',
       users
@@ -20,4 +19,4 @@ export const setUsers = () => {
   }
 }
 
-export default userReducer
+export default usersReducer

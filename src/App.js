@@ -5,8 +5,9 @@ import Notification from './components/Notification'
 import LogIn from './components/LogIn'
 import UserList from './components/UserList'
 import Togglable from './components/Togglable'
+import User from './components/User'
 import { setBlogs, addBlog } from './reducers/blogReducer'
-import { setUser, removeUser } from './reducers/userReducer'
+import { setUser, removeUser } from './reducers/loggedUserReducer'
 import { setUsers } from './reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -16,8 +17,8 @@ import './App.css'
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
-
+  const loggedUser = useSelector(state => state.loggedUser)
+  const users = useSelector(state => state.users)
   useEffect(() => {
     dispatch(setBlogs())
   }, [dispatch])
@@ -52,21 +53,28 @@ const App = () => {
       <BlogForm createBlog={createBlog} />
     </Togglable>
   )
+  const match = useRouteMatch('/users/:id')
+  const user = match
+    ? users.find(user => user.id === match.params.id)
+    : null
 
   return (
     <div>
       <h2>blogs</h2>
       <Notification />
-      {user === null ? (
+      {loggedUser === null ? (
         loginForm()
       ) : (
         <div>
-          <span>{user.username} logged in</span>
+          <span>{loggedUser.username} logged in</span>
           <button onClick={() => dispatch(removeUser())}>logout</button>
           {blogForm()}
         </div>
       )}
       <Switch>
+        <Route path='/users/:id'>
+          <User user={user} />
+        </Route>
         <Route path='/users'>
           <UserList />
         </Route>

@@ -1,6 +1,6 @@
 import blogService from '../services/blogs'
 
-const userReducer = (state = null, action) => {
+const loggedUserReducer = (state = null, action) => {
   switch(action.type) {
   case 'SET_USER':
     return action.user
@@ -28,4 +28,4 @@ export const removeUser = () => {
   }
 }
 
-export default userReducer
+export default loggedUserReducer
