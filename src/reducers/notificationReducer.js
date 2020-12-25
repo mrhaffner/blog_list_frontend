@@ -2,7 +2,7 @@ const notificationReducer = (state = { message: null, type: null }, action) => {
   switch(action.type) {
   case 'NEW_NOTIFICATION':
     return action.notification
-  case 'REMOVE':
+  case 'REMOVE_NOTIFICATION':
     return { message: null, type: null }
   default:
     return state
@@ -20,7 +20,7 @@ export const createNotification = notification => {
       notification
     })
     await timeout()
-    dispatch({ type: 'REMOVE' })
+    dispatch({ type: 'REMOVE_NOTIFICATION' })
   }
 }
 

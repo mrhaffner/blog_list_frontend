@@ -6,22 +6,23 @@ import LogIn from './components/LogIn'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { setBlogs } from './reducers/blogReducer'
+import { addBlog } from './reducers/blogReducer'
 import { createNotification } from './reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 import './App.css'
 
 const App = () => {
   const dispatch = useDispatch()
-
-  const [blogs, setBlogs] = useState([])
+  //
   const [user, setUser] = useState(null)
-
+  //
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
+    blogService.getAll().then(blogs => {
       blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs(blogs)
+      dispatch(setBlogs(blogs))
     })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -52,22 +53,9 @@ const App = () => {
     }
   }
 
-  const createBlog = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    const returnedBlog = await blogService.create(blogObject)
-    returnedBlog.user = user
-    setBlogs(blogs.concat(returnedBlog))
-  }
-
   const logout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBlogappUser')
-  }
-
-  const updateLikes = (id, likes, setLikes) => {
-    const newObject = { likes: likes + 1 }
-    blogService.addLike(id, newObject)
-    setLikes(likes + 1)
   }
 
   const loginForm = () => (
@@ -81,6 +69,13 @@ const App = () => {
       />
     </Togglable>
   )
+
+  const createBlog = async (blogObject) => {
+    blogFormRef.current.toggleVisibility()
+    const returnedBlog = await blogService.create(blogObject)
+    returnedBlog.user = user
+    dispatch(addBlog(returnedBlog))
+  }
 
   const blogFormRef = useRef()
 
@@ -104,7 +99,7 @@ const App = () => {
         </div>
       )}
 
-      <BlogList blogs={blogs} setBlogs={setBlogs} user={user} updateLikes={updateLikes} />
+      <BlogList user={user} />
     </div>
   )
 }
