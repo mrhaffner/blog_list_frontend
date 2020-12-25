@@ -1,3 +1,5 @@
+import blogService from '../services/blogs'
+
 const userReducer = (state = null, action) => {
   switch(action.type) {
   case 'SET_USER':
@@ -11,6 +13,7 @@ const userReducer = (state = null, action) => {
 
 export const setUser = user => {
   return dispatch => {
+    blogService.setToken(user.token)
     dispatch ({
       type: 'SET_USER',
       user
@@ -19,6 +22,7 @@ export const setUser = user => {
 }
 
 export const removeUser = () => {
+  window.localStorage.removeItem('loggedBlogappUser')
   return dispatch => {
     dispatch ({ type: 'LOG_OUT' })
   }

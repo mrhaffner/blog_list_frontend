@@ -1,7 +1,9 @@
+import blogService from '../services/blogs'
+
 const blogReducer = (state = [], action) => {
   switch(action.type) {
   case 'SET_BLOGS':
-    return action.blogs
+    return action.blogs.sort((a, b) => b.likes - a.likes)
   case 'NEW_BLOG':
     return [...state, action.blog]
   case 'REMOVE_BLOG':
@@ -13,8 +15,9 @@ const blogReducer = (state = [], action) => {
   }
 }
 
-export const setBlogs = blogs => {
-  return dispatch => {
+export const setBlogs = () => {
+  return async dispatch => {
+    const blogs = await blogService.getAll()
     dispatch ({
       type: 'SET_BLOGS',
       blogs
@@ -23,19 +26,21 @@ export const setBlogs = blogs => {
 }
 
 export const addBlog = blog => {
-  return dispatch => {
+  return async dispatch => {
+    const returnedBlog = await blogService.create(blog)
     dispatch ({
       type: 'NEW_BLOG',
-      blog
+      blog: returnedBlog
     })
   }
 }
 
-export const removeBlog = id => {
+export const removeBlog = blog => {
   return dispatch => {
+    blogService.remove(blog.id)
     dispatch({
       type: 'REMOVE_BLOG',
-      id
+      id: blog.id
     })
   }
 }
@@ -43,6 +48,8 @@ export const removeBlog = id => {
 export const addLike = blog => {
   const updatedBlog = { ...blog, likes: blog.likes + 1 }
   return dispatch => {
+    const newObject = { likes: blog.likes + 1 }
+    blogService.addLike(blog.id, newObject)
     dispatch({
       type: 'ADD_LIKE',
       updatedBlog

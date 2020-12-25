@@ -10,7 +10,6 @@ const notificationReducer = (state = { message: null, type: null }, action) => {
 }
 
 export const createNotification = notification => {
-  console.log(notification)
   function timeout() {
     return new Promise(resolve => setTimeout(resolve, 5000))
   }
