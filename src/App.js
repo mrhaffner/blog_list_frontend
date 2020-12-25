@@ -6,6 +6,7 @@ import LogIn from './components/LogIn'
 import UserList from './components/UserList'
 import Togglable from './components/Togglable'
 import User from './components/User'
+import Blog from './components/Blog'
 import { setBlogs, addBlog } from './reducers/blogReducer'
 import { setUser, removeUser } from './reducers/loggedUserReducer'
 import { setUsers } from './reducers/usersReducer'
@@ -53,10 +54,6 @@ const App = () => {
       <BlogForm createBlog={createBlog} />
     </Togglable>
   )
-  const match = useRouteMatch('/users/:id')
-  const user = match
-    ? users.find(user => user.id === match.params.id)
-    : null
 
   return (
     <div>
@@ -73,10 +70,13 @@ const App = () => {
       )}
       <Switch>
         <Route path='/users/:id'>
-          <User user={user} />
+          <User/>
         </Route>
         <Route path='/users'>
           <UserList />
+        </Route>
+        <Route path='/blogs/:id'>
+          <Blog/>
         </Route>
         <Route path='/'>
           <BlogList />
