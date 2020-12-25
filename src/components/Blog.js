@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { removeBlog, addLike } from '../reducers/blogReducer'
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,6 +11,7 @@ const Blog = ({ blog, user }) => {
     marginBottom: 5
   }
 
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
   const displayStyle = { display: visible ? '' : 'none' }

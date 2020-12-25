@@ -3,10 +3,15 @@ import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import LogIn from './components/LogIn'
+import UserList from './components/UserList'
 import Togglable from './components/Togglable'
 import { setBlogs, addBlog } from './reducers/blogReducer'
 import { setUser, removeUser } from './reducers/userReducer'
+import { setUsers } from './reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+  Switch, Route, Link, useRouteMatch, useHistory
+} from 'react-router-dom'
 import './App.css'
 
 const App = () => {
@@ -15,6 +20,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(setBlogs())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(setUsers())
   }, [dispatch])
 
   useEffect(() => {
@@ -57,8 +66,14 @@ const App = () => {
           {blogForm()}
         </div>
       )}
-
-      <BlogList user={user} />
+      <Switch>
+        <Route path='/users'>
+          <UserList />
+        </Route>
+        <Route path='/'>
+          <BlogList />
+        </Route>
+      </Switch>
     </div>
   )
 }
