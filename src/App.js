@@ -10,10 +10,7 @@ import { setBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/loggedUserReducer'
 import { setUsers } from './reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Switch, Route, Link, useRouteMatch, useHistory, Redirect
-} from 'react-router-dom'
-import './App.css'
+import { Switch, Route, Redirect } from 'react-router-dom'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -36,13 +33,12 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <div>
+    <div className='container'>
       <NavBar />
-      <h2>blogs</h2>
       <Notification />
       <Switch>
         <Route path='/users/:id'>
-          <User/>
+          <User />
         </Route>
         <Route path='/users'>
           <UserList />

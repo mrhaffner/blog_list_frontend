@@ -4,15 +4,9 @@ import { Link } from 'react-router-dom'
 import Togglable from '../components/Togglable'
 import BlogForm from '../components/BlogForm'
 import { addBlog } from '../reducers/blogReducer'
+import { ListGroup } from 'react-bootstrap'
 
 const BlogList = () => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
 
   const blogs = useSelector(state => state.blogs)
   const loggedUser = useSelector(state => state.loggedUser)
@@ -27,18 +21,21 @@ const BlogList = () => {
   const blogFormRef = useRef()
 
   const blogForm = () => (
-    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+    <Togglable buttonLabel="New Blog" ref={blogFormRef}>
       <BlogForm createBlog={createBlog} />
     </Togglable>
   )
   return (
     <div>
+      <h2>Blogs</h2>
       { loggedUser === null ? null : blogForm() }
-      {blogs.map(blog =>
-        <div key={blog.id} style={blogStyle}>
-          <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
-        </div>
-      )}
+      <ListGroup>
+        {blogs.map(blog =>
+          <ListGroup.Item key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
+          </ListGroup.Item>
+        )}
+      </ListGroup>
     </div>
   )
 }

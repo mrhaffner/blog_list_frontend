@@ -4,6 +4,7 @@ import { createNotification } from '../reducers/notificationReducer'
 import { setUser } from '../reducers/loggedUserReducer'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { Form, Button } from 'react-bootstrap'
 
 
 const LogIn = () => {
@@ -25,22 +26,26 @@ const LogIn = () => {
       dispatch(setUser(newUser))
       history.push('/')
     } catch (exception) {
-      dispatch(createNotification({ message: 'Wrong credentials', type: 'errorMessage' }))
+      dispatch(createNotification({ message: 'Wrong credentials', type: 'danger' }))
     }
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        <label>username</label>
-        <input id='username' type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </div>
-      <div>
-        <label>password</label>
-        <input id='password' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <button id='login' type="submit">login</button>
-    </form>
+    <div>
+      <h2>Sign In</h2>
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>username</Form.Label>
+          <Form.Control id='username' type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>password</Form.Label>
+          <Form.Control id='password' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </Form.Group>
+        <Button variant='primary' id='login' type="submit">Sign In</Button>
+      </Form>
+    </div>
+
   )
 }
 
