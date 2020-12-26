@@ -5,6 +5,10 @@ import { removeUser } from '../reducers/loggedUserReducer'
 
 
 const NavBar = () => {
+  const background = {
+    backgroundColor: 'grey',
+    padding: 5
+  }
   const padding = {
     paddingRight: 5
   }
@@ -14,7 +18,7 @@ const NavBar = () => {
   const history = useHistory()
 
   return (
-    <div>
+    <div style={background}>
       <Link to='/' style={padding}>Blogs</Link>
       <Link to='/users' style={padding}>Users</Link>
       {loggedUser ? <span style={padding}>{loggedUser.username} logged in</span> : null }

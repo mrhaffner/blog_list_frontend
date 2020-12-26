@@ -8,10 +8,11 @@ const User = () => {
   const user = users.length > 0
     ? users.find(user => id === user.id)
     : null
-  console.log(users, id)
+
   if (!user) {
     return null
   }
+
   return (
     <div>
       <h2>{user.username}</h2>

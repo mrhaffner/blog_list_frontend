@@ -8,7 +8,7 @@ const blogReducer = (state = [], action) => {
     return [...state, action.blog]
   case 'REMOVE_BLOG':
     return state.filter(x => x.id !== action.id)
-  case 'ADD_LIKE':
+  case 'UPDATE_BLOG':
     return state.map(x => x.id !== action.updatedBlog.id ? x : action.updatedBlog)
   default:
     return state
@@ -49,9 +49,24 @@ export const addLike = blog => {
   const updatedBlog = { ...blog, likes: blog.likes + 1 }
   return dispatch => {
     const newObject = { likes: blog.likes + 1 }
+    console.log(newObject)
     blogService.addLike(blog.id, newObject)
     dispatch({
-      type: 'ADD_LIKE',
+      type: 'UPDATE_BLOG',
+      updatedBlog
+    })
+  }
+}
+
+export const addComment = (blog, comment) => {
+  return dispatch => {
+    const comments = blog.comments.concat(comment)
+    const newComments = { comments }
+    blogService.addComment(blog.id, newComments)
+    const updatedBlog = blog
+    blog.comments = [...blog.comments, comment]
+    dispatch({
+      type: 'UPDATE_BLOG',
       updatedBlog
     })
   }
